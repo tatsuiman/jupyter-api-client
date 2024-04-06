@@ -20,7 +20,7 @@ install_requires = get_requirements("requirements.txt")
 
 setuptools.setup(
     name="jupyter-api-client",
-    version="0.0.1",
+    version="0.0.2",
     author="tatsuiman",
     description="Unofficial Python API client for Jupyter",
     long_description=long_description,
