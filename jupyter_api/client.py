@@ -188,7 +188,7 @@ class JupyterClient:
             pass
         finally:
             if cell:
-                self.add_cell(self, kernel_id, code, outputs)
+                self.add_cell(kernel_id, code, outputs)
             ws.close()
         return output
 
@@ -213,7 +213,7 @@ class JupyterClient:
         )
 
         # レスポンスの確認
-        if response.status_code == 201:
+        if response.status_code in [201, 200]:
             logging.info("ファイルのアップロードに成功しました。")
         else:
             logging.error(f"ファイルのアップロードに失敗しました。{response.text}")
