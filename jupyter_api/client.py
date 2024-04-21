@@ -105,7 +105,6 @@ class JupyterClient:
     def execute_code(self, code, kernel_id, timeout=20, cell=True):
         output = ""
         outputs = []
-        execute_reply = False
         # JupyterサーバーのWebSocket URL
         session_id = uuid.uuid1().hex
         ws_url = f"{self.ws_schema}://{self.host}/api/kernels/{kernel_id}/channels?session_id={session_id}"
@@ -156,8 +155,6 @@ class JupyterClient:
                         {"output_type": "stream", "name": "stdout", "text": text}
                     )
                     output += text
-                    if execute_reply:
-                        break
 
                 if msg_type == "display_data":
                     imgdata = response["content"]["data"]
@@ -172,15 +169,17 @@ class JupyterClient:
                         }
                     )
 
+                if msg_type == "execute_result":
+                    text = response["content"]["data"]["text/plain"]
+                    output += text
+                    outputs.append(
+                        {"output_type": "stream", "name": "stdout", "text": text}
+                    )
+
                 if msg_type == "execute_reply":
-                    execute_reply = True
+                    break
 
                 if msg_type == "status":
-                    if (
-                        response["content"]["execution_state"] == "idle"
-                        and execute_reply
-                    ):
-                        break
                     if response["content"]["execution_state"] == "restarting":
                         break
 

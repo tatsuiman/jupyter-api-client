@@ -12,7 +12,7 @@ kernel_id = client.create_kernel(language="python3")
 print(client.execute_code(f"!ls -l", kernel_id, cell=False))
 
 # run code
-print(client.execute_code(f"print('hello world')", kernel_id))
+print(client.execute_code(f"print('hello world')", kernel_id, cell=False))
 
 # delete kernel
 client.delete_kernel(kernel_id)
